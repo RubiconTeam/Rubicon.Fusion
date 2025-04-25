@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="ModuleDatabase" load_steps=2 format=3 uid="uid://c2yrbamquuml1"]
+
+[ext_resource type="Script" uid="uid://bqigtvj2tbbnm" path="res://source/Rubicon/Data/ModuleDatabase.cs" id="1_2iiff"]
+
+[resource]
+script = ExtResource("1_2iiff")
+Modules = []
+metadata/_custom_type_script = "uid://bqigtvj2tbbnm"

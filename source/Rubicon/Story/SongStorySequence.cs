@@ -13,7 +13,7 @@ public partial class SongStorySequence : StorySequence
     
     public override void Execute()
     {
-        RubiconGame.Context = new LoadContext { Name = Name, Difficulty = StoryMode.Difficulty, RuleSet = RuleSet };
+        RubiconGame.Context = new RubiconGameLoadContext { Name = Name, Difficulty = StoryMode.Difficulty, RuleSet = RuleSet };
         // TODO: Actually load into RubiconGame LOL
     }
 }

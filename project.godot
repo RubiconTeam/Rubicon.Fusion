@@ -32,6 +32,7 @@ buses/default_bus_layout="uid://8f826qwop1rs"
 UserSettings="*res://addons/PukiTools.GodotSharp/UserSettingsInstance.cs"
 RubiconEngine="*res://source/Rubicon/RubiconEngineInstance.cs"
 Conductor="*res://addons/Rubicon.Core/source/ConductorInstance.cs"
+ResourceQueueLoader="*res://addons/PukiTools.GodotSharp/ResourceQueueLoaderInstance.cs"
 ScreenManager="*res://addons/PukiTools.GodotSharp/Screens/ScreenManagerInstance.cs"
 StoryMode="*res://source/Rubicon/Story/StoryModeInstance.cs"
 RubiconGame="*res://source/Rubicon/Game/RubiconGameInstance.cs"
@@ -186,6 +187,12 @@ general/verbose=true
 general/resources_folder="res://resources"
 general/songs_folder="res://songs"
 rulesets/mania/default_note_skin="funkin"
+paths/song_database="res://resources/data/Songs.tres"
+paths/folders/resources_folder="res://resources/"
+paths/folders/songs_folder="res://songs/"
+paths/ruleset_database="res://resources/data/Rulesets.tres"
+paths/global_modules_database="res://resources/data/GlobalModules.tres"
+paths/events_database="res://resources/data/Events.tres"
 
 [rubicon_core]
 
@@ -196,3 +203,5 @@ judgments/mania/great=45.0
 judgments/mania/good=75.0
 judgments/mania/okay=105.0
 judgments/mania/bad=130.0
+paths/note_skin_database="res://resources/data/Skins.tres"
+paths/note_type_database="res://resources/data/NoteTypes.tres"

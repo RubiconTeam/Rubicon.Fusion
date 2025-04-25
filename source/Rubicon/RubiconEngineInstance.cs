@@ -19,6 +19,7 @@ global using System;
 using Godot.Collections;
 using PukiTools.GodotSharp;
 using Rubicon.Core.Data;
+using Rubicon.Data;
 
 namespace Rubicon;
 
@@ -43,6 +44,16 @@ public partial class RubiconEngineInstance : Node
 	/// The minimum aspect ratio the viewport can scale up to.
 	/// </summary>
 	[Export] public float MaximumAspectRatio = ProjectSettings.GetSetting("rubicon/general/maximum_aspect_ratio").AsSingle();
+
+	[Export] public SongDatabase Songs;
+
+	[Export] public ModuleMapDatabase Events;
+
+	[Export] public RuleSetDatabase RuleSets;
+	
+	[Export] public ModuleDatabase GlobalModules;
+
+	[Export] public Window Root;
 	
 	[Export] public Godot.Collections.Dictionary<string, Array<InputEvent>> DefaultInputMap = new();
 
@@ -58,7 +69,13 @@ public partial class RubiconEngineInstance : Node
 	{
 		_mainWindow = GetWindow();
 		_viewportSize = new Vector2I(ProjectSettings.GetSetting("display/window/size/viewport_width").AsInt32(), ProjectSettings.GetSetting("display/window/size/viewport_height").AsInt32());
+		Root = GetTree().Root;
 
+		Songs = ResourceLoader.Load<SongDatabase>(ProjectSettings.GetSetting("rubicon/paths/song_database").AsString());
+		Events = ResourceLoader.Load<ModuleMapDatabase>(ProjectSettings.GetSetting("rubicon/paths/events_database").AsString());
+		RuleSets = ResourceLoader.Load<RuleSetDatabase>(ProjectSettings.GetSetting("rubicon/paths/ruleset_database").AsString());
+		GlobalModules = ResourceLoader.Load<ModuleDatabase>(ProjectSettings.GetSetting("rubicon/paths/global_modules_database").AsString());
+		
 		Array<StringName> actionNames = InputMap.GetActions();
 		foreach (string actionName in actionNames) 
 			DefaultInputMap[actionName] = InputMap.ActionGetEvents(actionName);

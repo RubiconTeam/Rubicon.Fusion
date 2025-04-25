@@ -1,13 +1,13 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 using PukiTools.GodotSharp.Screens;
 using Rubicon.Core;
 using Rubicon.Core.Chart;
+using Rubicon.Core.Data;
 using Rubicon.Core.Events;
 using Rubicon.Core.Meta;
 using Rubicon.Core.Rulesets;
-using Rubicon.View2D;
-using Rubicon.View3D;
 
 namespace Rubicon.Game;
 
@@ -25,152 +25,45 @@ namespace Rubicon.Game;
 	{
 		base.ReadyPreload();
 		
-		// Just load the song meta for now, we'll wait until it's loaded.
-		LoadContext context = RubiconGame.Context;
-		ResourcesToLoad.AddResource($"res://songs/{context.Name}/data/Meta");
-		ResourcesToLoad.AddPath($"res://songs/{context.Name}/data/{context.RuleSet}-{context.Difficulty}.rbc");
+		RubiconGameLoadContext context = RubiconGame.Context;
+		SongMeta meta = RubiconEngine.Songs.Data[context.Name];
+		for (int s = 0; s < meta.Stages.Length; s++)
+			ScreenManager.AddPath(meta.Stages[s]);
+		
+		for (int c = 0; c < meta.Characters.Length; c++)
+			ScreenManager.AddPath(meta.Characters[c].Character);
+		
+		for (int m = 0; m < meta.Modules.Length; m++)
+			ScreenManager.AddPath(meta.Modules[m].Path);
+		
+		for (int g = 0; g < RubiconEngine.GlobalModules.Modules.Length; g++)
+			ScreenManager.AddPath(RubiconEngine.GlobalModules.Modules[g].Path);
 
-		string eventsPath = $"res://songs/{context.Name}/data/Events";
-		if (PathUtility.ResourceExists(eventsPath))
-			ResourcesToLoad.AddResource($"res://songs/{context.Name}/data/Events");
+		RuleSet ruleSet = RubiconEngine.RuleSets.Data[context.RuleSet];
+		NoteSkinDatabase noteSkins = RubiconCore.NoteSkins;
+		ScreenManager.AddPath(noteSkins.Skins[meta.NoteSkin].Rulesets[ruleSet.UniqueId].Path);
 
-		List<string> scriptPaths = [];
-		scriptPaths.AddRange(PathUtility.GetAbsoluteFilePathsAt("res://resources/game/common/", true));
-		scriptPaths.AddRange(PathUtility.GetAbsoluteFilePathsAt($"res://songs/{context.Name}/scripts/", true));
-		for (int i = 0; i < scriptPaths.Count; i++)
+		RubiChart chart = meta.GetDifficultyByName(context.Difficulty, context.RuleSet).Chart;
+		string[] noteTypeList = chart.GetAllNoteTypes();
+		for (int n = 0; n < noteTypeList.Length; n++)
+			ScreenManager.AddPath(RubiconCore.NoteTypes.Paths[noteTypeList[n]].Path);
+
+		EventMeta eventMeta = meta.Events;
+		List<string> eventsPassed = [];
+		for (int i = 0; i < eventMeta.Events.Length; i++)
 		{
-			string path = scriptPaths[i];
-			string ext = path.GetExtension().ToLower();
-			if (ext != "tscn" && ext != "scn" && ext != "cs" && ext != "gd")
+			string eventName = eventMeta.Events[i].Name;
+			if (eventsPassed.Contains(eventName))
 				continue;
-			
-			ResourcesToLoad.AddPath(path);
+				
+			eventsPassed.Add(eventName);
+			ScreenManager.AddPath(RubiconEngine.Events.Paths[eventName].Path);
 		}
 	}
 
 	public override void OnPreload(string path)
 	{
-		LoadContext context = RubiconGame.Context;
-		string metaPath = ResourcesToLoad.GetResourcePath($"res://songs/{context.Name}/data/Meta");
-		if (path == metaPath) // Meta loaded
-		{
-			Resource metaResource = ResourceLoader.LoadThreadedGet(metaPath);
-			if (metaResource is not SongMeta meta)
-				return;
-
-			RubiconGame.Metadata = meta;
-			
-			// Chart
-			RubiChart chart = meta.GetDifficultyByName(context.Difficulty, context.RuleSet).Chart;
-			string[] noteTypes = chart.GetAllNoteTypes();
-			RubiconGame.Chart = chart;
-			
-			for (int i = 0; i < noteTypes.Length; i++)
-				if (RubiconCore.NoteTypePaths.ContainsKey(noteTypes[i]))
-					ResourcesToLoad.AddPath(RubiconCore.NoteTypePaths[noteTypes[i]]);
-			
-			for (int i = 0; i < noteTypes.Length; i++)
-			{	
-				string noteTypePath = $"res://resources/game/notetypes/{noteTypes[i]}";
-				if (ResourceLoader.Exists(noteTypePath + ".tscn") || ResourceLoader.Exists(noteTypePath + ".scn"))
-					ResourcesToLoad.AddScene(noteTypePath);
-				
-				if (ResourceLoader.Exists(noteTypePath + ".gd"))
-					ResourcesToLoad.AddPath(noteTypePath + ".gd");
-				
-				if (ResourceLoader.Exists(noteTypePath + ".cs"))
-					ResourcesToLoad.AddPath(noteTypePath + ".cs");
-			}
-			
-			string uiStylePath = $"res://resources/ui/styles/{meta.UiStyle}/Style";
-			if (!PathUtility.ResourceExists(uiStylePath))
-				uiStylePath = $"res://resources/ui/styles/{ProjectSettings.GetSetting("rubicon/general/default_ui_style")}/Style";
-				
-			ResourcesToLoad.AddResource(uiStylePath);
-			
-			string ruleSetLoadPath = $"res://resources/game/rulesets/{context.RuleSet}";
-			if (!PathUtility.ResourceExists(ruleSetLoadPath))
-			{
-				context.RuleSet = ProjectSettings.GetSetting("rubicon/rulesets/default_ruleset").AsString();
-				ruleSetLoadPath = $"res://resources/game/rulesets/{context.RuleSet}";
-			}
-			
-			ResourcesToLoad.AddResource(ruleSetLoadPath);
-			
-			if (meta.Environment == GameEnvironment.None)
-				return;
-			
-			string envSuffix = meta.Environment == GameEnvironment.CanvasItem ? "2d" : "3d";
-			string stagePath = $"res://resources/game/stages/{meta.Stage}";
-			if (!PathUtility.SceneExists(stagePath)) // Stage Fallback
-			{
-				string fallBackStage = ProjectSettings.GetSetting("rubicon/general/fallback/stage_" + envSuffix).AsString();
-				stagePath = $"res://resources/game/stages/{fallBackStage}";
-				if (!PathUtility.SceneExists(stagePath)) // Dude
-					return;
-			}
-			
-			ResourcesToLoad.AddScene(stagePath);
-			
-			List<string> loadedCharacters = [];
-			for (int i = 0; i < meta.Characters.Length; i++)
-			{
-				string curCharacter = meta.Characters[i].Character;
-				if (loadedCharacters.Contains(curCharacter))
-					continue;
-
-				string charaPath = $"res://resources/game/characters/{curCharacter}";
-				if (!PathUtility.SceneExists(charaPath)) // Fallback
-				{
-					curCharacter = ProjectSettings.GetSetting("rubicon/general/fallback/character_" + envSuffix).AsString();	
-					charaPath = $"res://resources/game/characters/{curCharacter}";
-					
-					if (!PathUtility.SceneExists(charaPath))
-						continue;
-				}
-				
-				if (loadedCharacters.Contains(curCharacter))
-					continue;
-
-				ResourcesToLoad.AddScene(charaPath);
-				loadedCharacters.Add(curCharacter);
-			}
-			
-			return;
-		}
 		
-		string eventsPath = ResourcesToLoad.GetResourcePath($"res://songs/{context.Name}/data/Events");
-		if (path == eventsPath)
-		{
-			Resource eventsResource = ResourceLoader.LoadThreadedGet(eventsPath);
-			if (eventsResource is not EventMeta eventMeta)
-				return;
-
-			RubiconGame.Events = eventMeta;
-			
-			List<string> eventsPassed = [];
-			for (int i = 0; i < eventMeta.Events.Length; i++)
-			{
-				string eventName = eventMeta.Events[i].Name;
-				if (eventsPassed.Contains(eventName))
-					continue;
-				
-				eventsPassed.Add(eventName);
-				ResourcesToLoad.AddScene($"res://resources/game/events/{eventName}");
-			}
-
-			return;
-		}
-		
-		string ruleSetPath = PathUtility.GetResourcePath($"res://resources/game/rulesets/{context.RuleSet}");
-		if (path == ruleSetPath)
-		{
-			string noteSkinPath = $"res://resources/ui/styles/{RubiconGame.Metadata.NoteSkin}/{context.RuleSet}";
-			if (!PathUtility.ResourceExists(noteSkinPath))
-				noteSkinPath = $"res://resources/ui/styles/{ProjectSettings.GetSetting($"rubicon/rulesets/{context.RuleSet.ToLower()}/default_note_skin")}/{RubiconGame.Context.RuleSet}";
-
-			ResourcesToLoad.AddResource(noteSkinPath);
-		}
 	}
 
 	public override void _Ready()
@@ -179,7 +72,7 @@ namespace Rubicon.Game;
 		
 		#if TOOLS
 		if (RubiconGame.Context == null)
-			RubiconGame.Context = new LoadContext() { Name = SongName, Difficulty = Difficulty, RuleSet = RuleSet };
+			RubiconGame.Context = new RubiconGameLoadContext() { Name = SongName, Difficulty = Difficulty, RuleSet = RuleSet };
 		#endif
 
 		base._Ready();
@@ -197,18 +90,19 @@ namespace Rubicon.Game;
 
 		SongMeta songMeta = RubiconGame.Metadata;
 		RubiChart chart = RubiconGame.Chart;
-		LoadContext context = RubiconGame.Context;
+		RubiconGameLoadContext context = RubiconGame.Context;
 		PlayField playField = RubiconGame.PlayField;
 		ScoreTracker scoreTracker = playField.ScoreTracker;
 		
 		StringBuilder debugInfo = new StringBuilder();
 		
 		// Conductor
-		debugInfo.AppendLine($"BPM: {Conductor.Bpm} | Chart Time: {Conductor.Time} | Audio Time: {Conductor.RawTime}")
+		TimeChange curTimeChange = Conductor.GetCurrentTimeChange();
+		debugInfo.AppendLine($"BPM: {curTimeChange.Bpm} [{curTimeChange.TimeSignatureNumerator}/{curTimeChange.TimeSignatureDenominator}] | Time: {Conductor.Time} | Audio Time: {Conductor.AudioTime}")
 			.AppendLine($"Step: {Conductor.CurrentStep} | Beat: {Conductor.CurrentBeat} | Measure: {Conductor.CurrentMeasure}");
 
 		debugInfo.AppendLine("BPM List:");
-		foreach (BpmInfo bpm in Conductor.BpmList)
+		foreach (TimeChange bpm in Conductor.TimeChanges)
 			debugInfo.AppendLine($"[Time: {bpm.Time} | Exact Time (ms): {bpm.MsTime} | BPM: {bpm.Bpm} | Time Signature: {bpm.TimeSignatureNumerator}/{bpm.TimeSignatureDenominator}]");
 		
 		// Scores
@@ -221,7 +115,6 @@ namespace Rubicon.Game;
 		// Song Meta
 		debugInfo.AppendLine();
 		debugInfo.AppendLine($"Song Name: {songMeta.Name} by {songMeta.Artist} [{context.Name}] / Ruleset: {context.RuleSet} / Difficulty: {context.Difficulty}");
-		debugInfo.AppendLine($"Environment: {songMeta.Environment.ToString()} / Stage: {songMeta.Stage}");
 		debugInfo.AppendLine($"Note Skin: {songMeta.NoteSkin} / UI Style: {songMeta.UiStyle}");
 		debugInfo.AppendLine($"Charter: {chart.Charter} / Difficulty: {chart.Difficulty} / Speed: {chart.ScrollSpeed}");
 		
@@ -237,6 +130,7 @@ namespace Rubicon.Game;
 		debugInfo.Append("Target Bar Line: ");
 		debugInfo.AppendLine(playField.TargetBarLine);
 		
+		/*
 		if (songMeta.Environment == GameEnvironment.None)
 			return debugInfo.ToString();
 
@@ -276,7 +170,7 @@ namespace Rubicon.Game;
 				break;
 		}
 
-		debugInfo.Remove(debugInfo.Length - 1, 1);
+		debugInfo.Remove(debugInfo.Length - 1, 1);*/
 		return debugInfo.ToString();
 	}
 }

@@ -1,6 +1,7 @@
 using Rubicon.Core;
 using Rubicon.Core.Chart;
 using Rubicon.Data;
+using Rubicon.Enums;
 
 namespace Rubicon;
 
@@ -56,7 +57,7 @@ namespace Rubicon;
     /// </summary>
     [Signal] public delegate void BumpedEventHandler();
 
-    private BpmInfo _currentBpm;
+    private TimeChange _currentBpm;
     
     private int _bumpStep = 4; // This is DIFFERENT from TimeValue.Step!!!
     private int _stepOffset = 0;
@@ -76,7 +77,7 @@ namespace Rubicon;
         Conductor.StepHit += StepHit;
         Conductor.BpmChanged += BpmChanged;
         
-        BpmChanged(Conductor.BpmList[Conductor.BpmIndex]);
+        BpmChanged(Conductor.TimeChanges[Conductor.TimeChangeIndex]);
     }
 
     private void StepHit(int step)
@@ -88,7 +89,7 @@ namespace Rubicon;
             EmitSignalBumped();
     }
     
-    private void BpmChanged(BpmInfo currentBpm)
+    private void BpmChanged(TimeChange currentBpm)
     {
         _stepOffset += _currentBpm == null ? 0 : (int)Math.Floor((currentBpm.Time - _currentBpm.Time) * _currentBpm.TimeSignatureNumerator * _currentBpm.TimeSignatureDenominator);
         

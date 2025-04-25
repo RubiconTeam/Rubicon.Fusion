@@ -1,21 +1,35 @@
-[gd_scene load_steps=17 format=3 uid="uid://mumq3jg5xrxs"]
+[gd_scene load_steps=20 format=3 uid="uid://mumq3jg5xrxs"]
 
-[ext_resource type="Script" uid="uid://cqmn2xk4n5fbt" path="res://source/Rubicon/View2D/Character2D.cs" id="1_m12d2"]
+[ext_resource type="Script" uid="uid://cqmn2xk4n5fbt" path="res://source/Rubicon/Environment/RubiconCharacter2D.cs" id="1_m12d2"]
 [ext_resource type="SpriteFrames" uid="uid://bshwhocvvt46b" path="res://assets/game/characters/gf/GfSpeaker.tres" id="1_qxx66"]
+[ext_resource type="Script" uid="uid://cr3uh7k2ac6pn" path="res://source/Rubicon/Data/RubiconCharacterData.cs" id="2_6p7p4"]
 [ext_resource type="SpriteFrames" uid="uid://dko1g82nnm8li" path="res://assets/game/characters/gf/GfNoteAssets.tres" id="2_rx5gn"]
 [ext_resource type="SpriteFrames" uid="uid://dwqx625sqpkm5" path="res://assets/game/characters/gf/Icon.tres" id="2_y4mqf"]
 [ext_resource type="Script" uid="uid://bsc6hc1t5s5ry" path="res://source/Rubicon/Data/CharacterIconData.cs" id="3_asm0s"]
 [ext_resource type="Texture2D" uid="uid://bl6au38yy5tk1" path="res://assets/game/characters/gf/GfHair.png" id="3_m12d2"]
 [ext_resource type="Script" uid="uid://desx3mgib42mp" path="res://scripts/rubicon/objects/synced_sprite_2d.gd" id="6_6p7p4"]
+[ext_resource type="Script" uid="uid://uy6sqbu1jcbu" path="res://source/Rubicon/Environment/RubiconCameraPointReference2D.cs" id="8_f7e0g"]
 
-[sub_resource type="Resource" id="Resource_jwyij"]
+[sub_resource type="Resource" id="Resource_1xdou"]
 script = ExtResource("3_asm0s")
 Icon = ExtResource("2_y4mqf")
 Offset = Vector2(-45, -15)
-Color = Color(0.662745, 0.0392157, 0.329412, 1)
+Color = Color(0.643137, 0.0980392, 0.301961, 1)
 Scale = Vector2(1.5, 1.5)
 Filter = 2
-metadata/_custom_type_script = ExtResource("3_asm0s")
+metadata/_custom_type_script = "uid://bsc6hc1t5s5ry"
+
+[sub_resource type="Resource" id="Resource_f7e0g"]
+script = ExtResource("2_6p7p4")
+Icon = SubResource("Resource_1xdou")
+HoldType = 1
+RepeatLoopPoint = 0.083
+DanceList = PackedStringArray("danceLeft", "danceRight")
+TimeValue = 1
+TimeInterval = 1.0
+ForceDancing = true
+ResetAnimationProgress = true
+metadata/_custom_type_script = "uid://cr3uh7k2ac6pn"
 
 [sub_resource type="Animation" id="Animation_asm0s"]
 resource_name = "RESET"
@@ -730,16 +744,13 @@ _data = {
 &"singUP": SubResource("Animation_a8qwb")
 }
 
-[node name="Gf" type="Node2D" node_paths=PackedStringArray("Sprite", "AnimationPlayer", "CameraPoint")]
+[node name="Gf" type="Node2D" node_paths=PackedStringArray("Sprite", "AnimationPlayer", "CameraPointReference")]
 script = ExtResource("1_m12d2")
-Icon = SubResource("Resource_jwyij")
-DanceList = PackedStringArray("danceLeft", "danceRight")
-DanceTime = 1.0
-HoldType = 1
-RepeatLoopPoint = 0.083
+Data = SubResource("Resource_f7e0g")
 Sprite = NodePath("Speaker")
 AnimationPlayer = NodePath("AnimationPlayer")
-CameraPoint = NodePath("CameraPoint")
+CameraPointReference = NodePath("CameraPoint")
+metadata/_custom_type_script = "uid://cqmn2xk4n5fbt"
 metadata/_edit_horizontal_guides_ = [-227.0]
 metadata/_edit_vertical_guides_ = [1420.0, 1420.0, 1420.0]
 
@@ -773,3 +784,4 @@ libraries = {
 [node name="CameraPoint" type="Marker2D" parent="."]
 position = Vector2(150, -424)
 gizmo_extents = 0.0
+script = ExtResource("8_f7e0g")

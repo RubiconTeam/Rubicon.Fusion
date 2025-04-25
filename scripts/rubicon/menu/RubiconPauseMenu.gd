@@ -29,26 +29,26 @@ func open_pause() -> void:
 	
 	var play_field : PlayField = RubiconGame.PlayField
 	var health_bar : Node = play_field.GetHealthBar()
-	if health_bar is CsFunkinHealthBar:
-		var cs_health_bar : CsFunkinHealthBar = health_bar
-		top_bar.modulate = cs_health_bar.LeftColor
-		bottom_bar.modulate = cs_health_bar.RightColor
-		top_icon.sprite_frames = cs_health_bar.LeftIcon.sprite_frames
-		top_icon.texture_filter = cs_health_bar.LeftIcon.texture_filter
-		top_icon.scale = cs_health_bar.LeftIcon.scale * 3.0
-		bottom_icon.sprite_frames = cs_health_bar.RightIcon.sprite_frames
-		bottom_icon.texture_filter = cs_health_bar.RightIcon.texture_filter
-		bottom_icon.scale = cs_health_bar.RightIcon.scale * Vector2(-3, 3)
-	elif health_bar is GDFunkinHealthBar:
-		var gd_health_bar : GDFunkinHealthBar = health_bar
-		top_bar.modulate = gd_health_bar.left_color
-		bottom_bar.modulate = gd_health_bar.right_color
-		top_icon.sprite_frames = gd_health_bar.left_icon.sprite_frames
-		top_icon.texture_filter = gd_health_bar.left_icon.texture_filter
-		top_icon.scale = gd_health_bar.left_icon.scale * 3.0
-		bottom_icon.sprite_frames = gd_health_bar.right_icon.sprite_frames
-		bottom_icon.texture_filter = gd_health_bar.right_icon.texture_filter
-		bottom_icon.scale = gd_health_bar.right_icon.scale * Vector2(-3, 3)
+	#if health_bar is CsFunkinHealthBar:
+		#var cs_health_bar : CsFunkinHealthBar = health_bar
+		#top_bar.modulate = cs_health_bar.LeftColor
+		#bottom_bar.modulate = cs_health_bar.RightColor
+		#top_icon.sprite_frames = cs_health_bar.LeftIcon.sprite_frames
+		#top_icon.texture_filter = cs_health_bar.LeftIcon.texture_filter
+		#top_icon.scale = cs_health_bar.LeftIcon.scale * 3.0
+		#bottom_icon.sprite_frames = cs_health_bar.RightIcon.sprite_frames
+		#bottom_icon.texture_filter = cs_health_bar.RightIcon.texture_filter
+		#bottom_icon.scale = cs_health_bar.RightIcon.scale * Vector2(-3, 3)
+	#elif health_bar is GDFunkinHealthBar:
+		#var gd_health_bar : GDFunkinHealthBar = health_bar
+		#top_bar.modulate = gd_health_bar.left_color
+		#bottom_bar.modulate = gd_health_bar.right_color
+		#top_icon.sprite_frames = gd_health_bar.left_icon.sprite_frames
+		#top_icon.texture_filter = gd_health_bar.left_icon.texture_filter
+		#top_icon.scale = gd_health_bar.left_icon.scale * 3.0
+		#bottom_icon.sprite_frames = gd_health_bar.right_icon.sprite_frames
+		#bottom_icon.texture_filter = gd_health_bar.right_icon.texture_filter
+		#bottom_icon.scale = gd_health_bar.right_icon.scale * Vector2(-3, 3)
 	
 	AudioManager.GetGroup("SoundEffects").Play(opener_audio, true, true, 0.0)
 	animation_player.play("open")

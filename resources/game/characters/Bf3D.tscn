@@ -1,18 +1,33 @@
-[gd_scene load_steps=14 format=3 uid="uid://u70rbkwujkeh"]
+[gd_scene load_steps=17 format=3 uid="uid://u70rbkwujkeh"]
 
-[ext_resource type="Script" uid="uid://qnxbqw5ionsl" path="res://source/Rubicon/View3D/Character3D.cs" id="1_e00ic"]
+[ext_resource type="Script" uid="uid://qnxbqw5ionsl" path="res://source/Rubicon/Environment/RubiconCharacter3D.cs" id="1_e00ic"]
 [ext_resource type="SpriteFrames" uid="uid://dw06ivs1uhiwa" path="res://assets/game/characters/bf/BfIcon.tres" id="2_ln68d"]
 [ext_resource type="SpriteFrames" uid="uid://bf1b5h0jdi2y4" path="res://assets/game/characters/bf/boyfriend.tres" id="2_lqofb"]
 [ext_resource type="Script" uid="uid://d0uun7ht6o4rh" path="res://scripts/rubicon/objects/synced_sprite_3d.gd" id="3_iiixn"]
 [ext_resource type="Script" uid="uid://bsc6hc1t5s5ry" path="res://source/Rubicon/Data/CharacterIconData.cs" id="3_lm2c2"]
+[ext_resource type="Script" uid="uid://b2c0k7jrwsf0d" path="res://source/Rubicon/Environment/RubiconCameraPointReference3D.cs" id="4_c5vmy"]
+[ext_resource type="Script" uid="uid://cr3uh7k2ac6pn" path="res://source/Rubicon/Data/RubiconCharacterData.cs" id="4_fuiqg"]
 
-[sub_resource type="Resource" id="Resource_fuiqg"]
+[sub_resource type="Resource" id="Resource_lh26w"]
 script = ExtResource("3_lm2c2")
 Icon = ExtResource("2_ln68d")
 Offset = Vector2(-60, -15)
-Color = Color(0.192, 0.69, 0.82, 1)
+Color = Color(0.192157, 0.690196, 0.819608, 1)
 Scale = Vector2(1.5, 1.5)
 Filter = 2
+metadata/_custom_type_script = "uid://bsc6hc1t5s5ry"
+
+[sub_resource type="Resource" id="Resource_e0xot"]
+script = ExtResource("4_fuiqg")
+Icon = SubResource("Resource_lh26w")
+HoldType = 2
+RepeatLoopPoint = 0.125
+DanceList = PackedStringArray("idle")
+TimeValue = 1
+TimeInterval = 2.0
+ForceDancing = true
+ResetAnimationProgress = true
+metadata/_custom_type_script = "uid://cr3uh7k2ac6pn"
 
 [sub_resource type="Resource" id="Resource_c5vmy"]
 metadata/__load_path__ = "res://source/Rubicon/View3D/SyncedSprite3D.cs"
@@ -291,15 +306,12 @@ _data = {
 &"singUP": SubResource("Animation_6on5c")
 }
 
-[node name="Bf3d" type="Node3D" node_paths=PackedStringArray("VisualObject", "AnimationPlayer", "_cameraPoint")]
+[node name="Bf3d" type="Node3D" node_paths=PackedStringArray("VisualObject", "AnimationPlayer", "CameraPointReference")]
 script = ExtResource("1_e00ic")
-Icon = SubResource("Resource_fuiqg")
-FacingZAxis = true
-DanceTime = 2.0
-HoldType = 2
+Data = SubResource("Resource_e0xot")
 VisualObject = NodePath("Sprite")
 AnimationPlayer = NodePath("Sprite/AnimationPlayer")
-_cameraPoint = NodePath("CameraPoint")
+CameraPointReference = NodePath("CameraPoint")
 metadata/_custom_type_script = "uid://qnxbqw5ionsl"
 
 [node name="Sprite" type="AnimatedSprite3D" parent="." node_paths=PackedStringArray("animation_player")]
@@ -308,6 +320,8 @@ offset = Vector2(0, -207)
 no_depth_test = true
 sprite_frames = ExtResource("2_lqofb")
 animation = &"BF idle dance"
+frame = 13
+frame_progress = 1.0
 script = ExtResource("3_iiixn")
 sync = true
 animation_player = NodePath("AnimationPlayer")
@@ -320,3 +334,5 @@ libraries = {
 
 [node name="CameraPoint" type="Camera3D" parent="."]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 3, 1, 1.26423)
+script = ExtResource("4_c5vmy")
+metadata/_custom_type_script = "uid://b2c0k7jrwsf0d"

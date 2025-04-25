@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ModuleMapDatabase" load_steps=4 format=3 uid="uid://dgbeqhuxmidga"]
+
+[ext_resource type="Script" uid="uid://co26g8l5m4eeh" path="res://addons/Rubicon.Core/source/Data/ModulePathData.cs" id="1_j07ny"]
+[ext_resource type="Script" uid="uid://bd2ow5qgfg01v" path="res://addons/Rubicon.Core/source/Data/ModuleMapDatabase.cs" id="1_tfgtu"]
+
+[sub_resource type="Resource" id="Resource_j07ny"]
+script = ExtResource("1_j07ny")
+Path = "uid://bhlhrcnbw7qk"
+metadata/_custom_type_script = "uid://co26g8l5m4eeh"
+
+[resource]
+script = ExtResource("1_tfgtu")
+Paths = {
+&"SetCameraFocusGroup": SubResource("Resource_j07ny")
+}
+metadata/_custom_type_script = "uid://bd2ow5qgfg01v"

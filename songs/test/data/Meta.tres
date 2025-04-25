@@ -1,36 +1,30 @@
-[gd_resource type="Resource" script_class="SongMeta" load_steps=15 format=3 uid="uid://5fiv3wet0boj"]
+[gd_resource type="Resource" script_class="SongMeta" load_steps=16 format=3 uid="uid://5fiv3wet0boj"]
 
-[ext_resource type="Script" uid="uid://crgqugtqe2m3y" path="res://addons/Rubicon.Core/source/Chart/BpmInfo.cs" id="1_ycdkm"]
 [ext_resource type="Script" uid="uid://clg1lhiqfj0nk" path="res://addons/Rubicon.Core/source/Meta/CharacterMeta.cs" id="2_0eumu"]
 [ext_resource type="Script" uid="uid://b87l817pyjjsp" path="res://addons/Rubicon.Core/source/Meta/SongMeta.cs" id="3_ejhfw"]
 [ext_resource type="Resource" uid="uid://dq7teeqpg1a3s" path="res://songs/test/data/Mania-Stray.rbc" id="3_gdb3v"]
 [ext_resource type="AudioStream" uid="uid://dpn1k0iwt43dk" path="res://songs/test/Inst.ogg" id="3_t8k4v"]
 [ext_resource type="Script" uid="uid://13r6ekkfj72o" path="res://addons/Rubicon.Core/source/Meta/SongDifficulty.cs" id="4_arryy"]
+[ext_resource type="Resource" uid="uid://cyi745qna55b4" path="res://songs/test/data/Events.tres" id="5_6xf8c"]
 [ext_resource type="AudioStream" uid="uid://bw5jtofolwx3o" path="res://songs/test/Vocals.ogg" id="6_gdb3v"]
+[ext_resource type="Script" uid="uid://klh7ud055dq7" path="res://addons/Rubicon.Core/source/Chart/TimeChange.cs" id="6_u6qx7"]
 [ext_resource type="Resource" uid="uid://bbpouhx0tv3ib" path="res://songs/test/data/Mania-Snapped.rbc" id="SNAPPED"]
-
-[sub_resource type="Resource" id="Resource_kw1yv"]
-script = ExtResource("1_ycdkm")
-Time = 0.0
-Bpm = 150.0
-TimeSignatureNumerator = 4
-TimeSignatureDenominator = 4
 
 [sub_resource type="Resource" id="Resource_12cs3"]
 script = ExtResource("2_0eumu")
-Character = "BfPixel"
+Character = "uid://8k757t5ispmp"
 Nickname = &"Opponent"
 BarLine = &"Opponent"
 
 [sub_resource type="Resource" id="Resource_fgly4"]
 script = ExtResource("2_0eumu")
-Character = "Bf"
+Character = "uid://ch42nuiw15uh6"
 Nickname = &"Player"
 BarLine = &"Player"
 
 [sub_resource type="Resource" id="Resource_64a8n"]
 script = ExtResource("2_0eumu")
-Character = "Gf"
+Character = "uid://mumq3jg5xrxs"
 Nickname = &"Speaker"
 BarLine = &"Speaker"
 
@@ -38,7 +32,7 @@ BarLine = &"Speaker"
 script = ExtResource("4_arryy")
 Name = "Stray"
 Chart = ExtResource("3_gdb3v")
-RuleSet = "Mania"
+RuleSet = "mania"
 Color = Color(0.576471, 0.439216, 0.858824, 1)
 metadata/_custom_type_script = ExtResource("4_arryy")
 
@@ -46,9 +40,17 @@ metadata/_custom_type_script = ExtResource("4_arryy")
 script = ExtResource("4_arryy")
 Name = "Snapped"
 Chart = ExtResource("SNAPPED")
-RuleSet = "Mania"
+RuleSet = "mania"
 Color = Color(0.576471, 0.439216, 0.858824, 1)
 metadata/_custom_type_script = "uid://13r6ekkfj72o"
+
+[sub_resource type="Resource" id="Resource_6xf8c"]
+script = ExtResource("6_u6qx7")
+Time = 0.0
+Bpm = 150.0
+TimeSignatureNumerator = 4
+TimeSignatureDenominator = 4
+metadata/_custom_type_script = "uid://klh7ud055dq7"
 
 [resource]
 script = ExtResource("3_ejhfw")
@@ -57,11 +59,12 @@ Artist = "Hideo Kojima"
 Instrumental = ExtResource("3_t8k4v")
 Vocals = ExtResource("6_gdb3v")
 Difficulties = [SubResource("Resource_uy2iq"), SubResource("Resource_gdb3v")]
-BpmInfo = [SubResource("Resource_kw1yv")]
-UiStyle = "funkin"
+Events = ExtResource("5_6xf8c")
+TimeChanges = [SubResource("Resource_6xf8c")]
+Modules = []
+UiStyle = "uid://bumud17n0nyt2"
 NoteSkin = "funkin"
-Environment = 1
-Stage = "stage"
+Stages = PackedStringArray("res://resources/game/stages/Stage.tscn")
 Characters = [SubResource("Resource_12cs3"), SubResource("Resource_fgly4"), SubResource("Resource_64a8n")]
 Offset = 0.0
 DefaultRuleset = "Mania"

@@ -1,15 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6bvhxnwtjffo"]
+[gd_scene load_steps=7 format=3 uid="uid://c6bvhxnwtjffo"]
 
-[ext_resource type="Script" uid="uid://dxmj5v2b38sw8" path="res://source/Rubicon/View2D/Stage2D.cs" id="1_q6g61"]
+[ext_resource type="Script" uid="uid://dxmj5v2b38sw8" path="res://source/Rubicon/Environment/RubiconStage2D.cs" id="1_q6g61"]
 [ext_resource type="Texture2D" uid="uid://be8jtey655hmj" path="res://assets/game/stages/stage/stageback.png" id="2_bbiw8"]
 [ext_resource type="Texture2D" uid="uid://byh1wn4us8dni" path="res://assets/game/stages/stage/stagefront.png" id="3_s41wv"]
 [ext_resource type="Texture2D" uid="uid://87bp34u36d1w" path="res://assets/game/stages/stage/stagecurtains.png" id="4_yq1i0"]
-[ext_resource type="Script" uid="uid://bc06g0ycrwvf6" path="res://source/Rubicon/View2D/SpawnPoint2D.cs" id="5_ol4oh"]
+[ext_resource type="Script" uid="uid://bc06g0ycrwvf6" path="res://source/Rubicon/Environment/RubiconCharacterSpawnPoint2D.cs" id="5_ol4oh"]
+[ext_resource type="Script" uid="uid://uy6sqbu1jcbu" path="res://source/Rubicon/Environment/RubiconCameraPointReference2D.cs" id="14_n0t8e"]
 
-[node name="Stage" type="Node2D" node_paths=PackedStringArray("SpawnPoints")]
+[node name="Stage" type="Node2D" node_paths=PackedStringArray("InitialFocus", "SpawnPoints")]
 script = ExtResource("1_q6g61")
-Zoom = Vector2(1.35, 1.35)
-SpawnPoints = [NodePath("Spawns/SpeakerParallax/Speaker"), NodePath("Spawns/Opponent"), NodePath("Spawns/Player")]
+InitialFocus = NodePath("InitialPoint")
+SpawnPoints = [NodePath("Spawns/Opponent"), NodePath("Spawns/Player"), NodePath("Spawns/SpeakerParallax/Speaker")]
+metadata/_custom_type_script = "uid://dxmj5v2b38sw8"
+
+[node name="InitialPoint" type="Marker2D" parent="."]
+position = Vector2(833.027, 217.743)
+script = ExtResource("14_n0t8e")
+CustomZoom = Vector2(1.35, 1.35)
+metadata/_custom_type_script = "uid://uy6sqbu1jcbu"
 
 [node name="Objects" type="Node2D" parent="."]
 z_index = -5
@@ -48,17 +56,17 @@ scroll_scale = Vector2(0.95, 0.95)
 position = Vector2(751.5, 778)
 script = ExtResource("5_ol4oh")
 ValidNicknames = [&"Speaker"]
-metadata/_custom_type_script = ExtResource("5_ol4oh")
+metadata/_custom_type_script = "uid://bc06g0ycrwvf6"
 
 [node name="Opponent" type="Node2D" parent="Spawns"]
 position = Vector2(314.5, 867)
 script = ExtResource("5_ol4oh")
 ValidNicknames = [&"Opponent"]
-metadata/_custom_type_script = ExtResource("5_ol4oh")
+metadata/_custom_type_script = "uid://bc06g0ycrwvf6"
 
 [node name="Player" type="Node2D" parent="Spawns"]
 position = Vector2(975.5, 864)
 script = ExtResource("5_ol4oh")
 ValidNicknames = [&"Player"]
 LeftFacing = true
-metadata/_custom_type_script = ExtResource("5_ol4oh")
+metadata/_custom_type_script = "uid://bc06g0ycrwvf6"

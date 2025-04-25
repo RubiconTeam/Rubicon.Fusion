@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhlhrcnbw7qk"]
+
+[ext_resource type="Script" uid="uid://bq0v1txbspt7c" path="res://scripts/rubicon/events/SetCameraFocusGroupSongEvent.cs" id="1_g4fhy"]
+
+[node name="SetCameraFocusGroup" type="Node"]
+script = ExtResource("1_g4fhy")

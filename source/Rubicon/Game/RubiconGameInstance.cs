@@ -7,8 +7,7 @@ using Rubicon.Core.Meta;
 using Rubicon.Core.Data;
 using Rubicon.Core.Events;
 using Rubicon.Core.Rulesets;
-using Rubicon.View2D;
-using Rubicon.View3D;
+using Rubicon.Environment;
 
 namespace Rubicon.Game;
 
@@ -27,7 +26,7 @@ public partial class RubiconGameInstance : CanvasLayer
 	/// The load context of the current song.
 	/// Helps loading songs, charts, metadata and others.
 	/// </summary>
-	[Export] public LoadContext Context;
+	[Export] public RubiconGameLoadContext Context;
 	
 	/// <summary>
 	/// The instrumental of the current song and difficulty.
@@ -88,14 +87,9 @@ public partial class RubiconGameInstance : CanvasLayer
 	[Export] public Node RootNode;
 
 	/// <summary>
-	/// The environment responsible for handling 2D-related nodes (i.e. 2D characters and stages)
+	/// The place the characters and stages take place.
 	/// </summary>
-	[Export] public CanvasItemSpace CanvasItemSpace;
-	
-	/// <summary>
-	/// The environment responsible for handling 3D-related nodes (i.e. 3D characters and stages)
-	/// </summary>
-	[Export] public SpatialSpace SpatialSpace;
+	[Export] public RubiconEnvironmentSpace Space;
 
 	/// <summary>
 	/// The class responsible for loading and executing events.
@@ -123,29 +117,20 @@ public partial class RubiconGameInstance : CanvasLayer
 		if (!Context.IsValid())
 			return;
 
+		Active = true;
 		Layer = 16;
+		
+		Metadata = RubiconEngine.Songs.Data[Context.Name];
+		Chart = Metadata.GetDifficultyByName(Context.Difficulty, Context.RuleSet).Chart;
+		Events = Metadata.Events;
 		
 		RootNode = rootNode ?? this;
 		
 		// Set up rule set, and check paths too
 		string ruleSetName = Context.RuleSet;
-		RuleSet = LoadRuleSet(ruleSetName);
-		if (RuleSet is null)
-		{
-			string fallbackName = ProjectSettings.GetSetting("rubicon/rulesets/default_ruleset").AsString();
-			PrintUtility.PrintError("RubiconGame", $"Rule set \"{ruleSetName}\" was not able to be loaded. Falling back to \"{fallbackName}\".");
-			RuleSet = LoadRuleSet(fallbackName);
-		}
-
-		if (RuleSet is null) // You fucked up again bro
-			throw new Exception("RuleSet is still null. Please check your Project Settings at \"rubicon/rulesets\"");
-		PrintUtility.Print("RubiconGame", $"Rule Set \"{RuleSet.Name}\" loaded successfully.", true);
-		
+		RuleSet = RubiconEngine.RuleSets.Data[ruleSetName];
 		if (Metadata.Vocals is not null)
-		{
 			Vocals = AudioManager.GetGroup("Music").Play(Metadata.Vocals, false);
-			PrintUtility.Print("RubiconGame", $"Vocals found and loaded", true);
-		}
 
 		LoadSpace(Metadata);
 		
@@ -204,15 +189,7 @@ public partial class RubiconGameInstance : CanvasLayer
 	public void Bounce()
 	{
 		PlayField.Scale += Vector2.One * 0.015f;
-		switch (Metadata.Environment)
-		{
-			case GameEnvironment.CanvasItem:
-				CanvasItemSpace.Camera.Zoom += Vector2.One * 0.03f;
-				break;
-			case GameEnvironment.Spatial:
-				SpatialSpace.Camera.Fov -= 2;
-				break;
-		}
+		Space.Bounce();
 	}
 
 	/// <summary>
@@ -229,37 +206,14 @@ public partial class RubiconGameInstance : CanvasLayer
 		bool missed = result.Rating == Judgment.Miss;
 		if (!result.Flags.HasFlag(NoteResultFlags.Animation))
 		{
-			switch (Metadata.Environment)
-			{
-				case GameEnvironment.CanvasItem: // 2D Space
-				{
-					CharacterGroup2D characterGroup = CanvasItemSpace.GetCharacterGroup(name);
-					characterGroup.Sing(result.Direction, !missed && result.Hit == Hit.Hold, missed);
-					
-					// TODO: Bad code, need to consider other characters
-					bool charactersMissed = false;
-					for (int i = 0; i < characterGroup.Characters.Count; i++)
-						if (characterGroup.Characters[i].Missed)
-							charactersMissed = true;
+			RubiconCharacterGroup group = Space.GetCharacterGroup(name);	
+			group.Sing(result.Direction, !missed && result.Hit == Hit.Hold, missed);
+			bool charactersMissed = false;
+			for (int i = 0; i < group.Controllers.Length; i++)
+				if (group.Controllers[i].Missed)
+					charactersMissed = true;
 
-					missed = charactersMissed;
-					break;
-				}
-				case GameEnvironment.Spatial: // 3D Space
-				{
-					CharacterGroup3D characterGroup = SpatialSpace.GetCharacterGroup(name);
-					characterGroup.Sing(result.Direction, !missed && result.Hit == Hit.Hold, missed);
-					
-					// TODO: Bad code, need to consider other characters
-					bool charactersMissed = false;
-					for (int i = 0; i < characterGroup.Characters.Count; i++)
-						if (characterGroup.Characters[i].Missed)
-							charactersMissed = true;
-
-					missed = charactersMissed;
-					break;
-				}
-			}
+			missed = charactersMissed;
 		}
 
 		if (!result.Flags.HasFlag(NoteResultFlags.Vocals) && Vocals is not null)
@@ -292,16 +246,8 @@ public partial class RubiconGameInstance : CanvasLayer
 
 		if (!isAction)
 			return;
-
-		switch (Metadata.Environment)
-		{
-			case GameEnvironment.CanvasItem:
-				CanvasItemSpace.GetCharacterGroup(PlayField.TargetBarLine).SetFreezeSinging(isHolding);
-				break;
-			case GameEnvironment.Spatial:
-				SpatialSpace.GetCharacterGroup(PlayField.TargetBarLine).SetFreezeSinging(isHolding);
-				break;
-		}
+		
+		Space.GetCharacterGroup(PlayField.TargetBarLine).SetFreezeSinging(isHolding);
 	}
 
 	/// <summary>
@@ -324,7 +270,7 @@ public partial class RubiconGameInstance : CanvasLayer
 		Paused = false;
 		
 		PlayField.Resume();
-		Vocals?.Play(Conductor.RawTime);
+		Vocals?.Play(Conductor.AudioTime);
 		GetTree().Paused = false;
 	}
 
@@ -345,16 +291,8 @@ public partial class RubiconGameInstance : CanvasLayer
 		
 		RuleSet = null;
 		RootNode = null;
-
-		switch (Metadata.Environment)
-		{
-			case GameEnvironment.CanvasItem:
-				CanvasItemSpace.QueueFree();
-				break;
-			case GameEnvironment.Spatial:
-				SpatialSpace.QueueFree();
-				break;
-		}	
+		
+		Space.QueueFree();
 
 		Metadata = null;
 		Chart = null;
@@ -362,36 +300,9 @@ public partial class RubiconGameInstance : CanvasLayer
 
 		EventController.Reset();
 	}
-	
-	/// <summary>
-	/// Loads the ruleset provided via the ruleSetName parameter.
-	/// In case of being null, a fallback found in ProjectSettings will be loaded.
-	/// </summary>
-	/// <param name="ruleSetName">The name of the <see cref="RuleSet"/></param>
-	/// <returns>A valid <see cref="RuleSet"/></returns>
-	private RuleSet LoadRuleSet(string ruleSetName)
-	{
-		string ruleSetResourcePath = PathUtility.GetResourcePath($"res://resources/game/rulesets/{ruleSetName}");
-		if (string.IsNullOrWhiteSpace(ruleSetResourcePath))
-		{
-			PrintUtility.PrintError("RubiconGame", $"No resource exists at path \"{ruleSetResourcePath}\".");
-			return null;
-		}
-
-		Variant ruleSetResource = ResourceLoader.LoadThreadedGet(ruleSetResourcePath);
-		return ruleSetResource.As<RuleSet>();
-	}
 
 	private PlayField LoadPlayField(RuleSet ruleSet)
 	{
-		/*
-		Script script = ruleSet.PlayFieldScript;
-		if (script is not CSharpScript cSharpScript)
-		{
-			GD.PrintErr($"Rulesets do not support other languages other than C# at the moment. (path: \"{ruleSet.ResourcePath}\")");
-			return null;
-		}*/
-
 		GodotObject ruleSetObject = ruleSet.PlayFieldScript.New().AsGodotObject();
 		if (ruleSetObject is not PlayField playField)
 		{
@@ -408,57 +319,9 @@ public partial class RubiconGameInstance : CanvasLayer
 	/// <param name="songMeta">The metadata of the song.</param>
 	private void LoadSpace(SongMeta songMeta)
 	{
-		PrintUtility.Print("RubiconGame", "Environment: " + songMeta.Environment, true);
-		switch (songMeta.Environment)
-		{
-			case GameEnvironment.None:
-				Active = true;
-				break;
-			case GameEnvironment.CanvasItem: // 2D Space
-			{
-				CanvasItemSpace = new CanvasItemSpace();
-				CanvasItemSpace.Name = "Space";
-				CanvasItemSpace.Initialize(songMeta);
-				// Check if CanvasItemSpace was initialized to
-				// not fill the debugger with NullReferenceExceptions
-				Active = CanvasItemSpace.Initialized;
-				
-				// This is mostly a fallback for any uncovered exception when loading spaces.
-				// If anything fails and it is not stopped by an exception, you'll end up here
-				if (!CanvasItemSpace.Initialized)
-				{
-					Active = true;
-					songMeta.Environment = GameEnvironment.None; 
-					GD.PushError("An error was found initializing CanvasItemSpace, this does not relate to character or stage loading. Continuing without GameEnvironment");
-					return;
-				}
-				
-				RootNode.AddChild(CanvasItemSpace);
-				break;
-			}
-			case GameEnvironment.Spatial:
-				SpatialSpace = new SpatialSpace();
-				SpatialSpace.Name = "Space";
-				SpatialSpace.Initialize(songMeta);
-				// Check if SpatialSpace was initialized to
-				// not fill the debugger with NullReferenceExceptions
-				Active = SpatialSpace.Initialized;
-
-				// This is mostly a fallback for any uncovered exception when loading spaces.
-				// If anything fails and it is not stopped by an exception, you'll end up here
-				if (!SpatialSpace.Initialized)
-				{
-					Active = true;
-					songMeta.Environment = GameEnvironment.None; 
-					GD.PushError("An error was found initializing SpatialSpace. Continuing without GameEnvironment");
-					return;
-				}
-
-				RootNode.AddChild(SpatialSpace);
-				break;
-		}
-		
-		PrintUtility.Print("RubiconGame", "Space created successfully.", true);
+		Space = new RubiconEnvironmentSpace();
+		RootNode.AddChild(Space);
+		Space.Initialize(songMeta, Context.AutoGenerate);
 	}
 
 	/// <summary>
@@ -466,37 +329,28 @@ public partial class RubiconGameInstance : CanvasLayer
 	/// </summary>
 	private void LoadGameScripts()
 	{
-		List<string> scriptPaths = [];
-		scriptPaths.AddRange(PathUtility.GetAbsoluteFilePathsAt("res://resources/game/common/", true));
-		scriptPaths.AddRange(PathUtility.GetAbsoluteFilePathsAt($"res://songs/{Context.Name}/scripts/", true));
-		for (int i = 0; i < scriptPaths.Count; i++)
+		ModulePathData[] globalModules = RubiconEngine.GlobalModules.Modules;
+		for (int g = 0; g < globalModules.Length; g++)
 		{
-			string path = scriptPaths[i];
-			string ext = path.GetExtension().ToLower();
-			bool isScene = ext == "tscn" || ext == "scn";
-			bool isGdScript = ext == "gd";
-			bool isCSharpScript = ext == "cs";
-			if (!isScene && !isGdScript && !isCSharpScript)
+			ModulePathData module = globalModules[g];
+			PackedScene moduleScene = ResourceLoader.Load<PackedScene>(module.Path);
+			
+			if (!moduleScene.CanInstantiate())
 				continue;
+			
+			AddChild(moduleScene.Instantiate());
+		}
 
-			Resource resource = ResourceLoader.LoadThreadedGet(path);
-			if (isScene && resource is PackedScene packedScene)
-			{
-				AddChild(packedScene.Instantiate());
+		ModulePathData[] songModules = Metadata.Modules;
+		for (int m = 0; m < songModules.Length; m++)
+		{
+			ModulePathData module = songModules[m];
+			PackedScene moduleScene = ResourceLoader.Load<PackedScene>(module.Path);
+			
+			if (!moduleScene.CanInstantiate())
 				continue;
-			}
-
-			if (isGdScript && resource is GDScript gdScript)
-			{
-				AddChild(gdScript.New().As<Node>());
-				continue;
-			}
-
-			if (isCSharpScript && resource is CSharpScript cSharpScript)
-			{
-				AddChild(cSharpScript.New().As<Node>());
-				continue;
-			}
+			
+			AddChild(moduleScene.Instantiate());
 		}
 	}
 }

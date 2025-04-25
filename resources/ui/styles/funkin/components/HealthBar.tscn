@@ -1,12 +1,33 @@
-[gd_scene load_steps=7 format=3 uid="uid://hf1um15pbhvw"]
+[gd_scene load_steps=10 format=3 uid="uid://hf1um15pbhvw"]
 
-[ext_resource type="Script" uid="uid://c3jjgf8ag0ds0" path="res://scripts/rubicon/ui/CsProgressFunkinHealthBar.cs" id="1_0cxgf"]
+[ext_resource type="Script" uid="uid://ciwt1ss6x6p2b" path="res://scripts/rubicon/ui/FunkinHealthBar.gd" id="1_8f3ko"]
 [ext_resource type="SpriteFrames" uid="uid://dd1qyud388qn8" path="res://assets/game/characters/missing/PlaceholderIcon.tres" id="2_8f3ko"]
+[ext_resource type="Script" uid="uid://bsc6hc1t5s5ry" path="res://source/Rubicon/Data/CharacterIconData.cs" id="3_cblli"]
 [ext_resource type="SpriteFrames" uid="uid://dw06ivs1uhiwa" path="res://assets/game/characters/bf/BfIcon.tres" id="3_vxok1"]
 
+[sub_resource type="Resource" id="Resource_r5hky"]
+script = ExtResource("3_cblli")
+Icon = ExtResource("2_8f3ko")
+Offset = Vector2(-65, -15)
+Color = Color(0.631373, 0.631373, 0.631373, 1)
+Scale = Vector2(1, 1)
+Filter = 2
+metadata/_custom_type_script = "uid://bsc6hc1t5s5ry"
+
+[sub_resource type="Resource" id="Resource_8f3ko"]
+script = ExtResource("3_cblli")
+Icon = ExtResource("3_vxok1")
+Offset = Vector2(-65, -15)
+Color = Color(0.192157, 0.690196, 0.819608, 1)
+Scale = Vector2(1, 1)
+Filter = 2
+metadata/_custom_type_script = "uid://bsc6hc1t5s5ry"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4rl5"]
+bg_color = Color(1, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0p4vi"]
+bg_color = Color(0, 1, 0, 1)
 
 [sub_resource type="Curve2D" id="Curve2D_ri17c"]
 _data = {
@@ -14,7 +35,7 @@ _data = {
 }
 point_count = 2
 
-[node name="HealthBar" type="ColorRect" node_paths=PackedStringArray("Bar", "LeftIcon", "RightIcon", "IconContainer")]
+[node name="HealthBar" type="ColorRect" node_paths=PackedStringArray("progress_bar", "left_icon", "right_icon", "icon_container")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -27,12 +48,15 @@ offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
-script = ExtResource("1_0cxgf")
-Bar = NodePath("ProgressBar")
-LeftIcon = NodePath("ProgressBar/IconPath/IconContainer/LeftIcon")
-RightIcon = NodePath("ProgressBar/IconPath/IconContainer/RightIcon")
-IconContainer = NodePath("ProgressBar/IconPath/IconContainer")
-BounceTime = 0.25
+script = ExtResource("1_8f3ko")
+oppponent_data = SubResource("Resource_r5hky")
+player_data = SubResource("Resource_8f3ko")
+time_type = 1
+bounce_time = 1.0
+progress_bar = NodePath("ProgressBar")
+left_icon = NodePath("ProgressBar/IconPath/IconContainer/LeftIcon")
+right_icon = NodePath("ProgressBar/IconPath/IconContainer/RightIcon")
+icon_container = NodePath("ProgressBar/IconPath/IconContainer")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 layout_mode = 1
@@ -51,6 +75,7 @@ theme_override_styles/background = SubResource("StyleBoxFlat_y4rl5")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0p4vi")
 max_value = 1.0
 value = 0.5
+fill_mode = 1
 show_percentage = false
 
 [node name="IconPath" type="Path2D" parent="ProgressBar"]
@@ -65,12 +90,11 @@ position = Vector2(-8, 9)
 scale = Vector2(1.5, 1.5)
 sprite_frames = ExtResource("2_8f3ko")
 animation = &"neutral"
-offset = Vector2(-75, 0)
+offset = Vector2(-65, -15)
 
 [node name="RightIcon" type="AnimatedSprite2D" parent="ProgressBar/IconPath/IconContainer"]
 position = Vector2(-8, 9)
-scale = Vector2(1.5, 1.5)
+scale = Vector2(-1.5, 1.5)
 sprite_frames = ExtResource("3_vxok1")
 animation = &"neutral"
-offset = Vector2(75, 0)
-flip_h = true
+offset = Vector2(-65, -15)

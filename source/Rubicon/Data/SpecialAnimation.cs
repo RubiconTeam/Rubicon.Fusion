@@ -1,6 +1,3 @@
-using Rubicon.View2D;
-using Rubicon.View3D;
-
 namespace Rubicon.Data;
 
 /// <summary>

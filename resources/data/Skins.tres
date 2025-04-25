@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="NoteSkinDatabase" load_steps=8 format=3 uid="uid://b76qs7i5rpblh"]
+
+[ext_resource type="Script" uid="uid://cveyy47fsvxho" path="res://addons/Rubicon.Core/source/Data/NoteSkinMap.cs" id="1_jwi2v"]
+[ext_resource type="Script" uid="uid://ugvyp7yhx61m" path="res://addons/Rubicon.Core/source/Data/NoteSkinDatabase.cs" id="1_raing"]
+[ext_resource type="Script" uid="uid://bndku0vejr3qr" path="res://addons/Rubicon.Core/source/Data/NoteSkinPath.cs" id="2_f3vsn"]
+
+[sub_resource type="Resource" id="Resource_1c8n1"]
+script = ExtResource("2_f3vsn")
+Path = "uid://7tafnjku1ya5"
+metadata/_custom_type_script = "uid://bndku0vejr3qr"
+
+[sub_resource type="Resource" id="Resource_alcy3"]
+script = ExtResource("1_jwi2v")
+Rulesets = Dictionary[StringName, ExtResource("2_f3vsn")]({
+&"mania": SubResource("Resource_1c8n1")
+})
+metadata/_custom_type_script = "uid://cveyy47fsvxho"
+
+[sub_resource type="Resource" id="Resource_q46rr"]
+script = ExtResource("2_f3vsn")
+Path = "uid://evrsgocsl11y"
+metadata/_custom_type_script = "uid://bndku0vejr3qr"
+
+[sub_resource type="Resource" id="Resource_tktln"]
+script = ExtResource("1_jwi2v")
+Rulesets = Dictionary[StringName, ExtResource("2_f3vsn")]({
+&"mania": SubResource("Resource_q46rr")
+})
+metadata/_custom_type_script = "uid://cveyy47fsvxho"
+
+[resource]
+script = ExtResource("1_raing")
+Skins = Dictionary[StringName, ExtResource("1_jwi2v")]({
+&"funkin": SubResource("Resource_alcy3"),
+&"funkin_pixel": SubResource("Resource_tktln")
+})
+metadata/_custom_type_script = "uid://ugvyp7yhx61m"

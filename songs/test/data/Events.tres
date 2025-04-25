@@ -6,7 +6,7 @@
 [sub_resource type="Resource" id="Resource_smthL"]
 script = ExtResource("1_v7l0f")
 Time = 0.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -14,7 +14,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_gptco"]
 script = ExtResource("1_v7l0f")
 Time = 2.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -22,7 +22,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_h4sy6"]
 script = ExtResource("1_v7l0f")
 Time = 4.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -30,7 +30,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_f1frx"]
 script = ExtResource("1_v7l0f")
 Time = 6.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -38,7 +38,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_rk5v0"]
 script = ExtResource("1_v7l0f")
 Time = 8.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -46,7 +46,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_jectm"]
 script = ExtResource("1_v7l0f")
 Time = 9.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -54,7 +54,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_fcgen"]
 script = ExtResource("1_v7l0f")
 Time = 10.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -62,7 +62,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_add3v"]
 script = ExtResource("1_v7l0f")
 Time = 11.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -70,7 +70,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_2wry1"]
 script = ExtResource("1_v7l0f")
 Time = 12.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -78,7 +78,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_vvxm6"]
 script = ExtResource("1_v7l0f")
 Time = 13.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -86,7 +86,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_o7mr2"]
 script = ExtResource("1_v7l0f")
 Time = 14.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -94,7 +94,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_23v8v"]
 script = ExtResource("1_v7l0f")
 Time = 15.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -102,7 +102,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_n7t0j"]
 script = ExtResource("1_v7l0f")
 Time = 16.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -110,7 +110,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_6ktk0"]
 script = ExtResource("1_v7l0f")
 Time = 18.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -118,7 +118,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_q8njl"]
 script = ExtResource("1_v7l0f")
 Time = 20.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -126,7 +126,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_70xqv"]
 script = ExtResource("1_v7l0f")
 Time = 22.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -134,7 +134,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_jfs3q"]
 script = ExtResource("1_v7l0f")
 Time = 24.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -142,7 +142,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_qgk3b"]
 script = ExtResource("1_v7l0f")
 Time = 26.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -150,7 +150,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_ykdf6"]
 script = ExtResource("1_v7l0f")
 Time = 28.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -158,7 +158,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_ysyam"]
 script = ExtResource("1_v7l0f")
 Time = 30.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -166,7 +166,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_5iid4"]
 script = ExtResource("1_v7l0f")
 Time = 32.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -174,7 +174,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_nwvdw"]
 script = ExtResource("1_v7l0f")
 Time = 36.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -182,7 +182,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_g5qng"]
 script = ExtResource("1_v7l0f")
 Time = 40.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -190,7 +190,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_qxbpq"]
 script = ExtResource("1_v7l0f")
 Time = 44.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -198,7 +198,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_yvq3a"]
 script = ExtResource("1_v7l0f")
 Time = 48.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -206,7 +206,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_sruvm"]
 script = ExtResource("1_v7l0f")
 Time = 50.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -214,7 +214,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_3djv7"]
 script = ExtResource("1_v7l0f")
 Time = 52.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -222,7 +222,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_y1nvy"]
 script = ExtResource("1_v7l0f")
 Time = 54.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -230,7 +230,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_336hf"]
 script = ExtResource("1_v7l0f")
 Time = 56.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -238,7 +238,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_bg72a"]
 script = ExtResource("1_v7l0f")
 Time = 58.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
@@ -246,7 +246,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_n8owx"]
 script = ExtResource("1_v7l0f")
 Time = 60.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Opponent"
 })
@@ -254,7 +254,7 @@ Arguments = Dictionary[StringName, Variant]({
 [sub_resource type="Resource" id="Resource_v0i56"]
 script = ExtResource("1_v7l0f")
 Time = 62.0
-Name = &"SetCameraFocus"
+Name = &"SetCameraFocusGroup"
 Arguments = Dictionary[StringName, Variant]({
 &"Focus": &"Player"
 })
