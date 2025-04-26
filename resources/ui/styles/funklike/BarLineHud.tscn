@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdhctmpgm4j2v"]
 
 [ext_resource type="PackedScene" uid="uid://cynf1ud5pgdr3" path="res://resources/ui/styles/funklike/components/DanceHitDistance.tscn" id="1_5ijy6"]
-[ext_resource type="Script" uid="uid://qndddbbm4b34" path="res://addons/Rubicon.Core/source/UI/BarLineHud.cs" id="1_vo7nx"]
+[ext_resource type="Script" uid="uid://dy380qfn6dw5y" path="res://addons/Rubicon.Core/source/UI/GameHud.cs" id="1_vo7nx"]
 [ext_resource type="PackedScene" uid="uid://q5yhhc5khh8u" path="res://resources/ui/styles/funklike/components/DanceComboDisplay.tscn" id="2_vo7nx"]
 [ext_resource type="PackedScene" uid="uid://ct85hayoei4a1" path="res://resources/ui/styles/funklike/components/DanceJudgment.tscn" id="3_q8yeb"]
 
