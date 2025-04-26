@@ -19,10 +19,8 @@ func note_hit(_bar_line_name : StringName, _result : NoteResult):
 	pass
 
 func wait_for_second(time : float) -> void:
-	if Conductor.Time >= time:
-		return
-	
-	await get_tree().process_frame
+	while Conductor.Time < time:
+		await get_tree().process_frame
 
 func wait_for_measure(measure : float) -> void:
 	while Conductor.GetCurrentMeasure() < measure:
