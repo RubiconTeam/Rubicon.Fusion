@@ -159,6 +159,7 @@ buffering/agile_event_flushing=true
 [puki_tools]
 
 general/settings_path="user://settings.cfg"
+general/default_loading_screen="res://resources/ui/loading/Default.tscn"
 
 [rendering]
 
