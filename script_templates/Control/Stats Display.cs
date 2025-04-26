@@ -9,11 +9,17 @@ public partial class NewStatDisplay : CsStatDisplay
     // Do note that you can access the PlayField just by getting "PlayField"!
     public override void Initialize()
     {
-		
+		base.Initialize();
     }
-    
+
     // Called whenever the player hits or misses a note.
-    public override void UpdateStats(long combo, HitType hit, float distance)
+    public override void UpdateStats(long combo, Judgment hit, float distance)
+    {
+        
+    }
+
+    // Called when the options are updated in-game.
+    public override void OptionsUpdated()
     {
         
     }

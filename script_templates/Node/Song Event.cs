@@ -9,12 +9,14 @@ public partial class NewSongEvent : CsSongEvent
 	// Do note that you can access the PlayField just by getting "PlayField"!
 	public override void Initialize()
 	{
+		base.Initialize();
 		
+		// Add your code here!
 	}
 
 	// Called when the event controller reaches this event.
 	public override void CallEvent(float time, Dictionary<StringName, Variant> args)
 	{
-		
+		// Add your code here!
 	}
 }

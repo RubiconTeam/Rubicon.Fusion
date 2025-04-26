@@ -3,6 +3,12 @@ extends GDSongScript
 # This is a template for a song script in GDScript.
 # This can also act as a Node! So yes, you will have access to such things like _Process(delta).
 
+# Called when the node is initially created.
+func _ready() -> void:
+	super()
+	
+	# Add your code here!
+
 # Triggers every measure.
 func measure_hit(_measure : int) -> void:
 	pass

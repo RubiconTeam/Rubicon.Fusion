@@ -5,9 +5,16 @@ extends GDStatDisplay
 
 # This is basically your _ready() function.
 # Do note that you can access the PlayField just by getting play_field!
+
 func initialize() -> void:
-	pass
+	super()
+	
+	# Add your code here!
 
 # Called whenever the player hits or misses a note.
 func update_stats(_combo : int, _hit : int, _distance : float) -> void:
+	pass
+	
+# Called when the options are updated in-game.	
+func options_updated() -> void:
 	pass

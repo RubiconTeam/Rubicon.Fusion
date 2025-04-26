@@ -6,7 +6,9 @@ extends GDSongEvent
 # This is basically your _ready() function.
 # Do note that you can access the PlayField just by getting play_field!
 func initialize() -> void:
-	pass
+	super()
+	
+	# Add your code here!
 
 # Called when the event controller reaches this event.
 func call_event(time : float, args : Dictionary[StringName, Variant]): 

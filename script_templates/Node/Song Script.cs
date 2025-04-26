@@ -5,6 +5,14 @@ using Rubicon.Core.Rulesets;
 // This can also act as a Node! So yes, you will have access to such things like _Process(delta).
 public partial class NewSongScript : CsSongScript
 {
+	// Called when the node is initially created.
+	public override void _Ready()
+	{
+		base._Ready();
+		
+		// Add your code here!
+	}
+
 	// Triggers every measure.
 	public override void MeasureHit(int measure)
 	{
