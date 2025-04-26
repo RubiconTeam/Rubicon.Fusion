@@ -4,6 +4,5 @@
 
 [node name="RubiconGame" type="Node"]
 script = ExtResource("1_yp47r")
-Difficulty = "Snapped"
-RuleSet = "mania"
+Difficulty = "stray"
 NeedsPreloading = true
