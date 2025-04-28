@@ -73,5 +73,5 @@ NoteSkin = "funkin"
 Stages = PackedStringArray("res://resources/game/stages/Stage.tscn")
 Characters = [SubResource("Resource_12cs3"), SubResource("Resource_fgly4"), SubResource("Resource_64a8n")]
 Offset = 0.0
-DefaultRuleset = "Mania"
+DefaultRuleset = "mania"
 PlayableCharts = [&"Player", &"Opponent"]
