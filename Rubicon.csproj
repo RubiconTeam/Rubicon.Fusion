@@ -49,7 +49,6 @@
 	  <Content Include="addons\Rubicon.Core\importer\savers\rbc.gd" />
 	  <Content Include="addons\Rubicon.Core\source\API\GDHudElement.gd" />
 	  <Content Include="addons\Rubicon.Core\source\API\GDNoteType.gd" />
-	  <Content Include="addons\Rubicon.Core\source\API\GDSongEvent.gd" />
 	  <Content Include="addons\Rubicon.Core\source\API\GDStatDisplay.gd" />
 	  <Content Include="addons\Rubicon.Core\source\Chart\RubiChartConstants.gd" />
 	  <Content Include="addons\Rubicon.Core\source\Enums\BarDirection.gd" />
@@ -69,6 +68,7 @@
 	  <Content Include="scripts\rubicon\ui\scoring\FunkinJudgment.gd" />
 	  <Content Include="scripts\rubicon\ui\scoring\GDHitMaterialStatDisplay.gd" />
 	  <Content Include="source\Rubicon\API\GdPauseMenu.gd" />
+	  <Content Include="source\Rubicon\API\GDSongEvent.gd" />
 	  <Content Include="source\Rubicon\API\GDSongScript.gd" />
 	  <Content Include="source\Rubicon\Enums\CameraUpdate.gd" />
 	  <Content Include="source\Rubicon\Enums\CharacterHold.gd" />

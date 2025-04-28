@@ -5,7 +5,6 @@ using PukiTools.GodotSharp.Screens;
 using Rubicon.Core;
 using Rubicon.Core.Chart;
 using Rubicon.Core.Data;
-using Rubicon.Core.Events;
 using Rubicon.Core.Meta;
 using Rubicon.Core.Rulesets;
 

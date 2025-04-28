@@ -5,7 +5,6 @@ using Rubicon.Core;
 using Rubicon.Core.Chart;
 using Rubicon.Core.Meta;
 using Rubicon.Core.Data;
-using Rubicon.Core.Events;
 using Rubicon.Core.Rulesets;
 using Rubicon.Environment;
 
@@ -98,14 +97,6 @@ public partial class RubiconGameInstance : CanvasLayer
 
 	private string[] _actionNames;
 
-	public override void _Ready()
-	{
-		base._Ready();
-
-		EventController = new SongEventController();
-		AddChild(EventController);
-	}
-
 	/// <summary>
 	/// Sets up <see cref="RubiconGameInstance"/> for use.
 	/// Loads RuleSets, Charts and Metadata, PlayField 
@@ -136,10 +127,21 @@ public partial class RubiconGameInstance : CanvasLayer
 		
 		// Set up play field
 		PlayField = LoadPlayField(RuleSet);
-		PlayField.Setup(RuleSet, Metadata, Chart, Context.TargetIndex, Events);
+		PlayField.Setup(RuleSet, Metadata, Chart, Context.TargetIndex);
 		PlayField.NoteHit += NoteHit;
 		AddChild(PlayField);
 		PrintUtility.Print("RubiconGame", "PlayField loaded successfully.", true);
+		
+		if (Events != null)
+		{
+			for (int i = 0; i < Events.Events.Length; i++)
+				Events.Events[i].ConvertData(Metadata.TimeChanges);
+            
+			EventController = new SongEventController();
+			EventController.Name = "Event Controller";
+			EventController.Setup(Events, PlayField);
+			AddChild(EventController);
+		}
 		
 		BarLine targetBarLine = PlayField.BarLines[PlayField.TargetIndex];
 		_actionNames = new string[targetBarLine.Controllers.Length];
