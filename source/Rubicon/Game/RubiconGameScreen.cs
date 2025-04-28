@@ -92,7 +92,7 @@ namespace Rubicon.Game;
 		RubiChart chart = RubiconGame.Chart;
 		RubiconGameLoadContext context = RubiconGame.Context;
 		PlayField playField = RubiconGame.PlayField;
-		ScoreTracker scoreTracker = playField.ScoreTracker;
+		ScoreManager scoreManager = playField.ScoreManager;
 		
 		StringBuilder debugInfo = new StringBuilder();
 		
@@ -107,10 +107,9 @@ namespace Rubicon.Game;
 		
 		// Scores
 		debugInfo.AppendLine();
-		debugInfo.AppendLine($"Score: {scoreTracker.Score} | Accuracy: {scoreTracker.Accuracy}% | Rank: {scoreTracker.Rank.ToString()} | Clear: {scoreTracker.Clear.ToString()}");
-		debugInfo.AppendLine($"Perfects: {scoreTracker.PerfectHits} | Greats: {scoreTracker.GreatHits} | Goods: {scoreTracker.GoodHits} | Okays: {scoreTracker.OkayHits} | Bads: {scoreTracker.BadHits} | Misses: {scoreTracker.Misses} [Streak: {scoreTracker.MissStreak}]");
-		debugInfo.AppendLine($"Combo: {scoreTracker.Combo} | Highest Combo: {scoreTracker.HighestCombo} | Max Combo: {scoreTracker.MaxCombo}");
-		debugInfo.AppendLine($"Note Count: {scoreTracker.NoteCount} | Taps/Starts: {scoreTracker.NotesHit} | Tails: {scoreTracker.TailsHit}");
+		debugInfo.AppendLine($"Score: {scoreManager.Score} | Accuracy: {scoreManager.Accuracy}% | Rank: {scoreManager.Rank.ToString()} | Clear: {scoreManager.Clear.ToString()}");
+		debugInfo.AppendLine($"Perfects: {scoreManager.PerfectHits} | Greats: {scoreManager.GreatHits} | Goods: {scoreManager.GoodHits} | Okays: {scoreManager.OkayHits} | Bads: {scoreManager.BadHits} | Misses: {scoreManager.Misses} [Streak: {scoreManager.MissStreak}]");
+		debugInfo.AppendLine($"Combo: {scoreManager.Combo} | Highest Combo: {scoreManager.HighestCombo}");
 		
 		// Song Meta
 		debugInfo.AppendLine();

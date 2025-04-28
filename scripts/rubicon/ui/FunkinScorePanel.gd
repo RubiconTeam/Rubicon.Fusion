@@ -6,7 +6,7 @@ class_name FunkinScorePanel extends GDHudElement
 @export var divider : String = " / " ## The seperator for the text.
 
 func _process(_delta: float) -> void:
-	var score_tracker : ScoreTracker = play_field.ScoreTracker
+	var score_tracker : ScoreManager = play_field.ScoreManager
 	text_label.text = "Score: " + str(score_tracker.Score) + divider + "Accuracy: " + str(snappedf(score_tracker.Accuracy, 0.01)) + "%" + divider + "Misses: " + str(score_tracker.Misses) + divider + "Rank: " + get_rank_text(score_tracker.Rank) + " (" + get_clear_text(score_tracker.Clear) + ")"
 
 func get_rank_text(rank : int) -> String:
