@@ -17,7 +17,7 @@ namespace Rubicon.Game;
 public partial class RubiconGameInstance : CanvasLayer
 {
 	/// <summary>
-	/// Disables <see cref="_Process"/> and <see cref="_Input"/> when false.
+	/// Marks RubiconGame's current active state. If it's not on, many features will not work on RubiconGame.
 	/// </summary>
 	[Export] public bool Active = false;
 	
@@ -42,6 +42,11 @@ public partial class RubiconGameInstance : CanvasLayer
 	/// Not required for the song to start.
 	/// </summary>
 	[Export] public AudioStreamPlayer Vocals;
+	
+	/// <summary>
+	/// Whether to synchronize the instrumental and vocals with the Conductor.
+	/// </summary>
+	[Export] public bool Synchronize = true;
 	
 	[ExportGroup("Status"), Export] public bool Paused = false;
 
@@ -75,10 +80,9 @@ public partial class RubiconGameInstance : CanvasLayer
 	[Export] public PlayField PlayField;
 
 	/// <summary>
-	/// Executes <see cref="Bounce"/> depending on the bpm,
-	/// <see cref="TimeValue"/> and step.
+	/// The controller that handles the HUD bouncing on beat.
 	/// </summary>
-	[Export] public BeatSyncer BounceBeatSyncer;
+	[Export] public HudBounce HudBounce;
 
 	/// <summary>
 	/// The Root/Parent node of <see cref="RubiconGameInstance"/>, usually <see cref="RubiconGameScreen"/>
@@ -125,11 +129,17 @@ public partial class RubiconGameInstance : CanvasLayer
 
 		LoadSpace(Metadata);
 		
+		HudBounce = new HudBounce();
+		HudBounce.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+		HudBounce.Name = "HudBounce";
+		AddChild(HudBounce);
+		
 		// Set up play field
 		PlayField = LoadPlayField(RuleSet);
 		PlayField.Setup(RuleSet, Metadata, Chart, Context.TargetIndex);
 		PlayField.NoteHit += NoteHit;
-		AddChild(PlayField);
+		PlayField.Resynchronized += ResyncVocals;
+		HudBounce.AddChild(PlayField);
 		PrintUtility.Print("RubiconGame", "PlayField loaded successfully.", true);
 		
 		if (Events != null)
@@ -148,12 +158,6 @@ public partial class RubiconGameInstance : CanvasLayer
 		for (int i = 0; i < _actionNames.Length; i++)
 			_actionNames[i] = targetBarLine.Controllers[i].Action;
 		
-		BounceBeatSyncer = new BeatSyncer();
-		BounceBeatSyncer.Name = "UI Bumper";
-		BounceBeatSyncer.Value = 1f;
-		BounceBeatSyncer.Bumped += Bounce;
-		AddChild(BounceBeatSyncer);
-		
 		LoadGameScripts();
 
 		/*
@@ -171,27 +175,15 @@ public partial class RubiconGameInstance : CanvasLayer
 		Vocals?.Play();
 	}
 
-	public override void _Process(double delta)
+	/// <summary>
+	/// Re-syncs the vocals with the Conductor.
+	/// </summary>
+	public void ResyncVocals()
 	{
-		base._Process(delta);
-
-		if (!Active)
+		if (Vocals == null || !Vocals.IsPlaying())
 			return;
 		
-		// TODO: Optimize this later
-		Vector2 playFieldScale = PlayField.Scale;
-		PlayField.Scale = playFieldScale.Lerp(Vector2.One, 3.125f * (float)delta);
-
-		PlayField.PivotOffset = PlayField.Size / 2f;
-	}
-
-	/// <summary>
-	/// Handle camera bouncing set by <see cref="BounceBeatSyncer"/>.
-	/// </summary>
-	public void Bounce()
-	{
-		PlayField.Scale += Vector2.One * 0.015f;
-		Space.Bounce();
+		Vocals.Seek(Conductor.AudioTime);
 	}
 
 	/// <summary>
@@ -289,7 +281,7 @@ public partial class RubiconGameInstance : CanvasLayer
 		musicGroup.DestroyPlayer(Vocals);
 		
 		PlayField.QueueFree();
-		BounceBeatSyncer.QueueFree();
+		HudBounce.QueueFree();
 		
 		RuleSet = null;
 		RootNode = null;

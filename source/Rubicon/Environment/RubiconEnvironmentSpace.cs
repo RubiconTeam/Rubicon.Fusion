@@ -2,6 +2,7 @@ using System.Linq;
 using Godot.Collections;
 using Rubicon.Core.Meta;
 using Camera2D = Godot.Camera2D;
+using CollectionExtensions = System.Collections.Generic.CollectionExtensions;
 
 namespace Rubicon.Environment;
 
@@ -16,6 +17,8 @@ namespace Rubicon.Environment;
     /// The 3D camera controller for viewing 3D stages.
     /// </summary>
     [Export] public RubiconCameraController3D Camera3D;
+    
+    [Export] public BeatSyncer BeatSyncer;
 
     private Dictionary<StringName, RubiconCharacterController> _characters = [];
     private Dictionary<StringName, RubiconCharacterGroup> _characterGroups = [];
@@ -36,6 +39,12 @@ namespace Rubicon.Environment;
         Camera3D = new RubiconCameraController3D();
         Camera3D.Name = "Controller";
         Camera3D.ZoomMotionData.LerpWeight = 3.125f;
+        
+        BeatSyncer = new BeatSyncer();
+        BeatSyncer.Name = "CameraBeatSyncer";
+        BeatSyncer.Value = 1f;
+        BeatSyncer.Bumped += Bounce;
+        AddChild(BeatSyncer);
         
         if (!autoGenerate)
             return;
@@ -139,7 +148,7 @@ namespace Rubicon.Environment;
     /// <returns>A character if found, null if not.</returns>
     public RubiconCharacterController GetCharacter(StringName nickName)
     {
-        return _characters[nickName];
+        return CollectionExtensions.GetValueOrDefault(_characters, nickName);
     }
 
     /// <summary>
@@ -149,7 +158,7 @@ namespace Rubicon.Environment;
     /// <returns>A character group if found, null if not.</returns>
     public RubiconCharacterGroup GetCharacterGroup(StringName nickName)
     {
-        return _characterGroups[nickName];
+        return CollectionExtensions.GetValueOrDefault(_characterGroups, nickName);
     }
 
     /// <summary>
@@ -159,7 +168,7 @@ namespace Rubicon.Environment;
     /// <returns>A stage if found, null if not.</returns>
     public RubiconStage2D GetStage2D(StringName stageName)
     {
-        return _stage2Ds[stageName];
+        return CollectionExtensions.GetValueOrDefault(_stage2Ds, stageName);
     }
     
     /// <summary>
@@ -169,7 +178,7 @@ namespace Rubicon.Environment;
     /// <returns>A stage if found, null if not.</returns>
     public RubiconStage3D GetStage3D(StringName stageName)
     {
-        return _stage3Ds[stageName];
+        return CollectionExtensions.GetValueOrDefault(_stage3Ds, stageName);
     }
 
     /// <summary>
