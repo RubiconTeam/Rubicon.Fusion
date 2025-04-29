@@ -1,10 +1,18 @@
-[gd_resource type="Resource" script_class="UiStyle" load_steps=4 format=3 uid="uid://bumud17n0nyt2"]
+[gd_resource type="Resource" script_class="UiStyle" load_steps=6 format=3 uid="uid://bumud17n0nyt2"]
 
+[ext_resource type="Script" uid="uid://dbqgd0mm52hcr" path="res://addons/Rubicon.Core/source/UI/RuleSetUiData.cs" id="2_majwp"]
 [ext_resource type="PackedScene" uid="uid://cd3iyrsx18g3k" path="res://resources/ui/styles/funkin/PauseMenu.tscn" id="2_ygs4w"]
 [ext_resource type="PackedScene" uid="uid://cywb2uc8om2ie" path="res://resources/ui/styles/funkin/GameHud.tscn" id="3_dj2ce"]
 [ext_resource type="Script" uid="uid://dbn85h7ahlsdp" path="res://addons/Rubicon.Core/source/UI/UiStyle.cs" id="3_majwp"]
 
+[sub_resource type="Resource" id="Resource_nhb3e"]
+script = ExtResource("2_majwp")
+GlobalHud = ExtResource("3_dj2ce")
+metadata/_custom_type_script = "uid://dbqgd0mm52hcr"
+
 [resource]
 script = ExtResource("3_majwp")
+RuleSets = Dictionary[StringName, ExtResource("2_majwp")]({
+&"mania": SubResource("Resource_nhb3e")
+})
 PauseMenu = ExtResource("2_ygs4w")
-MainHud = ExtResource("3_dj2ce")

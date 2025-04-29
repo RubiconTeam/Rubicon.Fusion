@@ -1,12 +1,20 @@
-[gd_resource type="Resource" script_class="UiStyle" load_steps=5 format=3 uid="uid://chxyngbhdngs7"]
+[gd_resource type="Resource" script_class="UiStyle" load_steps=7 format=3 uid="uid://chxyngbhdngs7"]
 
 [ext_resource type="PackedScene" uid="uid://bdhctmpgm4j2v" path="res://resources/ui/styles/funklike/BarLineHud.tscn" id="1_s1732"]
+[ext_resource type="Script" uid="uid://dbqgd0mm52hcr" path="res://addons/Rubicon.Core/source/UI/RuleSetUiData.cs" id="2_fx273"]
 [ext_resource type="PackedScene" uid="uid://cd3iyrsx18g3k" path="res://resources/ui/styles/funkin/PauseMenu.tscn" id="3_rak8a"]
 [ext_resource type="Script" uid="uid://dbn85h7ahlsdp" path="res://addons/Rubicon.Core/source/UI/UiStyle.cs" id="3_s1732"]
 [ext_resource type="PackedScene" uid="uid://b2mqpp6yyxnso" path="res://resources/ui/styles/funklike/GameHud.tscn" id="5_6d6pu"]
 
+[sub_resource type="Resource" id="Resource_6d6pu"]
+script = ExtResource("2_fx273")
+GlobalHud = ExtResource("5_6d6pu")
+LocalHud = ExtResource("1_s1732")
+metadata/_custom_type_script = "uid://dbqgd0mm52hcr"
+
 [resource]
 script = ExtResource("3_s1732")
-MainHud = ExtResource("5_6d6pu")
-BarLineHud = ExtResource("1_s1732")
+RuleSets = Dictionary[StringName, ExtResource("2_fx273")]({
+&"mania": SubResource("Resource_6d6pu")
+})
 PauseMenu = ExtResource("3_rak8a")
