@@ -28,3 +28,6 @@
 # Secret songs for testing
 [Ss]ongs/SecretSongs/
 [Ss]ongs/secret_songs/
+
+# Temporary
+addons/first_boot_warning/built
