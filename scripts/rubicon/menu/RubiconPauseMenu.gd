@@ -28,7 +28,7 @@ func open_pause() -> void:
 	artist_label.text = meta.Name + "\nBy: " + meta.Artist + "\nCharter: " + chart.Charter
 	
 	var play_field : PlayField = RubiconGame.PlayField
-	var health_bar : Node = play_field.GetHealthBar()
+	#var health_bar : Node = play_field.GetHealthBar()
 	#if health_bar is CsFunkinHealthBar:
 		#var cs_health_bar : CsFunkinHealthBar = health_bar
 		#top_bar.modulate = cs_health_bar.LeftColor
